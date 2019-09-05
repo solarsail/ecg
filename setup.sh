@@ -8,6 +8,6 @@ else
 fi
 
 
-pip install -r requirements.txt
-pip install --upgrade $TF==1.8.0
+pip2 install -r requirements.txt
+pip2 install --upgrade $TF==1.8.0
 
