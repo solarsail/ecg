@@ -18,7 +18,7 @@ def add_conv_weight(
         num_filters,
         subsample_length=1,
         **params):
-    from keras.layers import Conv1D 
+    from keras.layers import Conv1D
     layer = Conv1D(
         filters=num_filters,
         kernel_size=filter_length,
@@ -45,7 +45,7 @@ def resnet_block(
         subsample_length,
         block_index,
         **params):
-    from keras.layers import Add 
+    from keras.layers import Add
     from keras.layers import MaxPooling1D
     from keras.layers.core import Lambda
 
@@ -115,6 +115,8 @@ def add_compile(model, **params):
     optimizer = Adam(
         lr=params["learning_rate"],
         clipnorm=params.get("clipnorm", 1))
+    #from keras.optimizers import SGD
+    #optimizer = SGD(lr=0.01, decay=1e-5, momentum=0.9)
 
     model.compile(loss='categorical_crossentropy',
                   optimizer=optimizer,

@@ -48,6 +48,7 @@ class Preproc:
         y = pad([[self.class_to_int[c] for c in s] for s in y], val=3, dtype=np.int32)
         y = keras.utils.np_utils.to_categorical(
                 y, num_classes=len(self.classes))
+        #print(self.classes)
         return y
 
 def pad(x, val=0, dtype=np.float32):
@@ -79,9 +80,9 @@ def load_ecg(record):
         ecg = sio.loadmat(record)['val'].squeeze()
     elif ext == ".dat":
         ecg = wfdb.rdsamp(basename, channels=[0])[0].squeeze()
-    else: # Assumes binary 16 bit integers
+    else: # Assumes binary 32 bit integers
         with open(record, 'r') as fid:
-            ecg = np.fromfile(fid, dtype=np.int16)
+            ecg = np.fromfile(fid, dtype=np.int32)
 
     trunc_samp = STEP * int(len(ecg) / STEP)
     return ecg[:trunc_samp]

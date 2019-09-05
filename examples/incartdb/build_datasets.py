@@ -32,9 +32,9 @@ def load_all(data_path):
             li = samp / STEP
             while li > len(labels):
                 labels.append('~')
-            if li == len(labels):
+            if li == len(labels) and label not in ['+', 'Q', 'S']:
                 labels.append(label)
-            elif li < len(labels) and label != 'N':
+            elif li < len(labels) and label not in ['+', 'Q', 'S', 'N']:
                 #print(samp, li, len(labels))
                 labels[-1] = label
 
@@ -60,7 +60,7 @@ def make_json(save_path, dataset):
             fid.write('\n')
 
 if __name__ == "__main__":
-    random.seed(2018)
+    random.seed(201909)
 
     dev_frac = 0.1
     data_path = "data/"
