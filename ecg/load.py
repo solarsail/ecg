@@ -9,6 +9,7 @@ import os
 import random
 import scipy.io as sio
 import tqdm
+import wfdb
 
 STEP = 256
 
@@ -44,7 +45,7 @@ class Preproc:
 
     def process_y(self, y):
         # TODO, awni, fix hack pad with noise for cinc
-        y = pad([[self.class_to_int[c] for c in s] for s in y], val=3, dtype=np.int32) 
+        y = pad([[self.class_to_int[c] for c in s] for s in y], val=3, dtype=np.int32)
         y = keras.utils.np_utils.to_categorical(
                 y, num_classes=len(self.classes))
         return y
@@ -71,10 +72,13 @@ def load_dataset(data_json):
     return ecgs, labels
 
 def load_ecg(record):
-    if os.path.splitext(record)[1] == ".npy":
+    basename, ext = os.path.splitext(record)
+    if ext == ".npy":
         ecg = np.load(record)
-    elif os.path.splitext(record)[1] == ".mat":
+    elif ext == ".mat":
         ecg = sio.loadmat(record)['val'].squeeze()
+    elif ext == ".dat":
+        ecg = wfdb.rdsamp(basename, channels=[0])[0].squeeze()
     else: # Assumes binary 16 bit integers
         with open(record, 'r') as fid:
             ecg = np.fromfile(fid, dtype=np.int16)
